@@ -1,5 +1,5 @@
 declare const styles: {
-  readonly "home": string;
+  readonly "footer-div": string;
 };
 export = styles;
 
