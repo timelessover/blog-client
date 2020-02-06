@@ -1,6 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
-import Nav from '../components/nav/nav'
+import Header from '../components/Header'
 
 const Home = () => (
   <div>
@@ -9,7 +9,7 @@ const Home = () => (
       <link rel="icon" href="/favicon.ico" />
     </Head>
 
-    <Nav />
+    <Header />
 
     <div className="hero">
       <h1 className="title">Welcome to Next.js!</h1>
