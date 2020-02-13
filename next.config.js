@@ -1,8 +1,9 @@
+
 const withSass = require('@zeit/next-sass')
 const withCSS = require('@zeit/next-css');
 const { TypedCssModulesPlugin } = require('typed-css-modules-webpack-plugin');
 
-const createTypedModules = (path)=>{
+const createTypedModules = (path) => {
     return new TypedCssModulesPlugin({
         globPattern: path,
     })
@@ -32,4 +33,4 @@ module.exports = () => withCSS(Object.assign(withSass({
         )
         return config;
     }
-}),{ cssModules: false }) )
+}), { cssModules: false }))

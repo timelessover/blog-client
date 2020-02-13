@@ -1,33 +1,65 @@
-import React from 'react'
-import style from './style.scss'
+import React from "react";
+import styles from "./style.scss";
+import cx from "classnames";
 
-import { Row, Col, Menu, Icon } from 'antd'
+const menuList = [
+  {
+    key: "home",
+    type: "home",
+    name: "首页"
+  },
+  {
+    key: "video",
+    type: "youtube",
+    name: "视频"
+  },
+  {
+    key: "life",
+    type: "smile",
+    name: "生活"
+  }
+];
+
+import { Row, Col, Menu, Icon, Button, Divider } from "antd";
 const Header = () => (
-    <div className={style["header"]}>
-        <Row type="flex" justify="center">
-            <Col xs={24} sm={24} md={10} lg={15} xl={12}>
-                <span className={style["header-logo"]}>技术胖</span>
-                <span className={style["header-txt"]}>专注前端开发,每年100集免费视频。</span>
-            </Col>
+  <div className={cx(styles["header"])}>
+    <Row type="flex" justify="center">
+      <Col xs={24} sm={24} md={4} lg={4} xl={4}>
+        <span className={cx(styles["header-logo"])}>Chris_Ping 的博客空间</span>
+      </Col>
+      <Col
+        className={cx(styles["memu-item"])}
+        xs={0}
+        sm={0}
+        md={10}
+        lg={10}
+        xl={10}
+      >
+        <Menu mode="horizontal">
+          {menuList.map(item => {
+            return (
+              <Menu.Item key={item.key}>
+                <Icon type={item.type} />
+                {item.name}
+              </Menu.Item>
+            );
+          })}
+        </Menu>
+      </Col>
+      <Col
+        className={cx(styles["btn-list"])}
+        xs={0}
+        sm={0}
+        md={4}
+        lg={4}
+        xl={4}
+      >
+        <Button type="primary">登录</Button>
+        <Divider type="vertical" />
+        <Button type="default">注册</Button>
+      </Col>
+    </Row>
+  </div>
+);
 
-            <Col className="memu-div" xs={0} sm={0} md={14} lg={8} xl={6}>
-                <Menu mode="horizontal">
-                    <Menu.Item key="home">
-                        <Icon type="home" />
-                        首页
-                </Menu.Item>
-                    <Menu.Item key="video">
-                        <Icon type="youtube" />
-                        视频
-                </Menu.Item>
-                    <Menu.Item key="life">
-                        <Icon type="smile" />
-                        生活
-                </Menu.Item>
-                </Menu>
-            </Col>
-        </Row>
-    </div>
-)
-
-export default Header
+export default Header;

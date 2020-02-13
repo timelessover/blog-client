@@ -29,6 +29,7 @@ body {
 
 .list-context {
     color: #777;
+    display: flex;
     padding: .5rem;
 }
 
