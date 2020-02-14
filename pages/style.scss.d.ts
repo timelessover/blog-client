@@ -1,5 +1,7 @@
 declare const styles: {
-  readonly "list-context": string;
+  readonly "container-left": string;
+  readonly "container-right": string;
+  readonly "context": string;
   readonly "list-icon": string;
   readonly "list-title": string;
 };

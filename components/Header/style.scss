@@ -1,18 +1,23 @@
+$height:50px;
+$themeColor:#1890ff;
 
+.header {
+    background-color: #fff;
+    padding-top: 20px;
+    margin: 0 auto;
+    overflow: hidden;
 
-    .header {
-        background-color: #fff;
-        padding-top:20px; 
-        margin: 0 auto;
-        overflow: hidden;
-
-        .header-logo {
-            color: #1e90ff;
-            font-size: 20px;
-            line-height: 50px;
-        }
-
+    .header-logo {
+        color: $themeColor;
+        font-size: 24px;
+        line-height: $height;
     }
+
+    .btn-list {
+        line-height: $height;
+    }
+
+}
 
 
 
@@ -20,12 +25,12 @@
 
 
 :global(.ant-menu) {
-    line-height: 50px;
+    line-height: $height;
 
 }
 
-:global(.ant-menu-horizontal){
-        border-bottom: none;
+:global(.ant-menu-horizontal) {
+    border-bottom: none;
 }
 
 :global(.ant-menu-item) {

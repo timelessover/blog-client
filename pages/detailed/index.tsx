@@ -1,20 +1,21 @@
 
-import React, { useState } from './node_modules/react'
-import Head from './node_modules/next/head'
-import { Row, Col, Affix, Icon, Breadcrumb } from './node_modules/antd'
-import './style.scss'
+import React, { useState } from 'react'
+import Head from 'next/head'
+import { Row, Col, Affix, Icon, Breadcrumb } from 'antd'
+import styles from './style.scss'
+import cx from 'classnames'
 
 import Header from '../../components/Header'
 import Author from '../../components/Author'
-import Advert from '../../components/Advert'
+import Advert from '../../components/TagList'
 import Footer from '../../components/Footer'
 
-import MarkNav from './node_modules/markdown-navbar';
-import './node_modules/markdown-navbar/dist/navbar.css';
+import MarkNav from 'markdown-navbar';
+import 'markdown-navbar/dist/navbar.css';
 
-import marked from './node_modules/marked'
-import hljs from "./node_modules/highlight.js.js.js";
-import './node_modules/highlight.js/styles/monokai-sublime.css';
+import marked from 'marked'
+import hljs from "highlight.js";
+import "highlight.js/styles/github.css";
 
 
  
@@ -79,60 +80,54 @@ const Detailed = () => {
 
     let html = marked(markdown)
     return (
-        <>
-            <Head>
-                <title>博客详细页</title>
-            </Head>
-            <Header />
-            <Row className="comm-main" type="flex" justify="center">
-                <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={14}  >
-                    <div>
-                        <div className="bread-div">
-                            <Breadcrumb>
-                                <Breadcrumb.Item><a href="/">首页</a></Breadcrumb.Item>
-                                <Breadcrumb.Item>视频列表</Breadcrumb.Item>
-                                <Breadcrumb.Item>xxxx</Breadcrumb.Item>
-                            </Breadcrumb>
-                        </div>
+      <>
+        <Head>
+          <title>博客详细页</title>
+        </Head>
+        <Header />
+        <Row className="comm-main" type="flex" justify="center">
+          <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={14}>
+            <div>
+              <div>
+                <div className={styles["detailed-title"]}>
+                  React实战视频教程-技术胖Blog开发(更新08集)
+                </div>
 
-                        <div>
-                            <div className="detailed-title">
-                                React实战视频教程-技术胖Blog开发(更新08集)
-                            </div>
+                <div className={cx(styles["list-icon"], "center")}>
+                  <span>
+                    <Icon type="calendar" /> 2019-06-28
+                  </span>
+                  <span>
+                    <Icon type="fire" /> 5498
+                  </span>
+                </div>
 
-                            <div className="list-icon center">
-                                <span><Icon type="calendar" /> 2019-06-28</span>
-                                <span><Icon type="folder" /> 视频教程</span>
-                                <span><Icon type="fire" /> 5498人</span>
-                            </div>
+                <div
+                  className="detailed-content"
+                  dangerouslySetInnerHTML={{ __html: html }}
+                ></div>
+              </div>
+            </div>
+          </Col>
 
-                            <div className="detailed-content" dangerouslySetInnerHTML ={{__html:html}} >
-                                
-                            </div>
-
-                        </div>
-
-                    </div>
-                </Col>
-
-                <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}>
-                    <Author />
-                    <Advert />
-                    <Affix offsetTop={5}>
-                        <div className="detailed-nav comm-box">
-                            <div className="nav-title">文章目录</div>
-                            <MarkNav
-                                className="article-menu"
-                                source={markdown}
-                                ordered={false}
-                            />
-                        </div>
-                    </Affix>
-                </Col>
-            </Row>
-            <Footer />
-        </>
-    )
+          <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}>
+            <Author />
+            <Advert />
+            <Affix offsetTop={5}>
+              <div className="detailed-nav comm-box">
+                <div className="nav-title">文章目录</div>
+                <MarkNav
+                  className="article-menu"
+                  source={markdown}
+                  ordered={false}
+                />
+              </div>
+            </Affix>
+          </Col>
+        </Row>
+        <Footer />
+      </>
+    );
     
 } 
 export default Detailed

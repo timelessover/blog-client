@@ -1,20 +1,26 @@
 .author-div {
     text-align: center;
-    padding: 1rem;
+    padding: 14px;
 
     >div {
-        margin-bottom: 1rem;
+        margin-bottom: 14px;
 
     }
 
     .author-introduction {
-        font-size: .8rem;
+        font-size: 16px;
         color: #999;
     }
 
-    .account {
-        background-color: #999;
-        margin-left: .5rem;
-        margin-right: .5rem;
+    .account-list{
+        display: flex;
+        justify-content: space-between;
+        margin: 0 auto;
+        width: 70%;
+        .account {
+            background-color: #999;
+        }
     }
+
+    
 }

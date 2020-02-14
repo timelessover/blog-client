@@ -1,11 +1,10 @@
 import { Avatar, Divider } from 'antd'
-import './style.scss'
+import styles from './style.scss'
 
 const Footer = () => (
-    <div className="footer-div">
-        <div>系统由 React+Node+Ant Desgin驱动 </div>
-        <div>JSPang.com</div>
-    </div>
-)
+  <div className={styles["footer-div"]}>
+    <div>系统由 React+Node+Ant Desgin驱动 </div>
+  </div>
+);
 
 export default Footer
