@@ -9,6 +9,7 @@ import Footer from "../components/Footer";
 import cx from "classnames";
 import Link from "next/link";
 
+
 const Home = () => {
   const [mylist, setMylist] = useState([
     {
@@ -35,7 +36,7 @@ const Home = () => {
   return (
     <>
       <Head>
-        <title>List</title>
+        <title>Home</title>
       </Head>
       <Header />
       <Row className="comm-main" type="flex" justify="center">

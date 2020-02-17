@@ -1,27 +1,32 @@
 import React from "react";
 import styles from "./style.scss";
 import cx from "classnames";
+import Link from 'next/link'
 
 const menuList = [
   {
     key: "home",
     type: "home",
-    name: "首页"
+    name: "首页",
+    href: "/"
   },
   {
     key: "video",
     type: "youtube",
-    name: "项目"
+    name: "项目",
+    href: "/project"
   },
   {
     key: "message",
     type: "smile",
-    name: "流言板"
+    name: "流言板",
+    href: '/message'
   },
   {
     key: "about",
     type: "smile",
-    name: "关于"
+    name: "关于",
+    href: 'about'
   }
 ];
 
@@ -31,9 +36,7 @@ const Header = () => (
     <div className={cx(styles["header"])}>
       <Row type="flex" justify="center">
         <Col xs={24} sm={24} md={8} lg={7} xl={5}>
-          <span className={cx(styles["header-logo"])}>
-            Chris_Ping 的博客空间
-          </span>
+          <span className={cx(styles["header-logo"])}>Chris Liu 的博客空间</span>
         </Col>
         <Col
           className={cx(styles["memu-item"])}
@@ -47,8 +50,12 @@ const Header = () => (
             {menuList.map(item => {
               return (
                 <Menu.Item key={item.key}>
-                  <Icon type={item.type} />
-                  {item.name}
+                  <Link href={item.href}>
+                    <a>
+                      <Icon type={item.type} />
+                      {item.name}
+                    </a>
+                  </Link>
                 </Menu.Item>
               );
             })}

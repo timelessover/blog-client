@@ -9,13 +9,16 @@ import Header from '../../components/Header'
 import Author from '../../components/Author'
 import Advert from '../../components/TagList'
 import Footer from '../../components/Footer'
+import Approval from "../../components/Approval";
+import Comment from "../../components/Comment";
+import CommentList from "../../components/CommentList";
 
 import MarkNav from 'markdown-navbar';
 import 'markdown-navbar/dist/navbar.css';
 
 import marked from 'marked'
 import hljs from "highlight.js";
-import "highlight.js/styles/github.css";
+import "highlight.js/styles/monokai-sublime.css";
 
 
  
@@ -56,7 +59,9 @@ let markdown =
     '> aaaaaaaaa\n' +
     '>> bbbbbbbbb\n' +
     '>>> cccccccccc\n\n' +
-    '``` var a=11; ```'
+    '```\n'+
+    'var a=11;\n'+
+    '```'
 
 
 
@@ -86,38 +91,50 @@ const Detailed = () => {
         </Head>
         <Header />
         <Row className="comm-main" type="flex" justify="center">
-          <Col className="comm-left" xs={24} sm={24} md={16} lg={18} xl={14}>
-            <div>
-              <div>
-                <div className={styles["detailed-title"]}>
-                  React实战视频教程-技术胖Blog开发(更新08集)
-                </div>
-
-                <div className={cx(styles["list-icon"], "center")}>
-                  <span>
-                    <Icon type="calendar" /> 2019-06-28
-                  </span>
-                  <span>
-                    <Icon type="fire" /> 5498
-                  </span>
-                </div>
-
-                <div
-                  className="detailed-content"
-                  dangerouslySetInnerHTML={{ __html: html }}
-                ></div>
+          <Col xs={24} sm={24} md={24} lg={18} xl={12}>
+            <div className="comm-left">
+              <div className={styles["detailed-title"]}>
+                React实战视频教程-技术胖Blog开发(更新08集)
               </div>
+
+              <div className={cx(styles["list-icon"], styles["center"])}>
+                <span>
+                  <Icon type="calendar" /> 2019-06-28
+                </span>
+                <span>
+                  <Icon type="folder" /> js
+                </span>
+                <span>
+                  <Icon type="fire" /> 5498
+                </span>
+                <span>
+                  <Icon type="like" /> 0
+                </span>
+
+                <span>
+                  <Icon type="message" /> 0
+                </span>
+              </div>
+
+              <div
+                className={styles["detailed-content"]}
+                dangerouslySetInnerHTML={{ __html: html }}
+              ></div>
+              <Approval />
             </div>
+
+            <Comment />
+            <CommentList/>
           </Col>
 
-          <Col className="comm-right" xs={0} sm={0} md={7} lg={5} xl={4}>
+          <Col className="comm-right" xs={0} sm={0} md={0} lg={6} xl={5}>
             <Author />
             <Advert />
-            <Affix offsetTop={5}>
-              <div className="detailed-nav comm-box">
-                <div className="nav-title">文章目录</div>
+            <Affix offsetTop={71}>
+              <div className={cx(styles["detailed-nav"], "comm-box")}>
+                <div className={styles["nav-title"]}>文章目录</div>
                 <MarkNav
-                  className="article-menu"
+                  className={styles["article-menu"]}
                   source={markdown}
                   ordered={false}
                 />

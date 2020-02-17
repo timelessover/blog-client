@@ -17,7 +17,7 @@ const Home = () => {
     return (
       <>
         <Head>
-          <title>Project</title>
+          <title>留言板</title>
         </Head>
         <Header />
         <Row className="comm-main" type="flex" justify="center">

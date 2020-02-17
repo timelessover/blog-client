@@ -6,9 +6,15 @@
         border-radius: 6px;
         overflow: hidden;
     }
-    .tag-list{
+
+    .tag-list {
         display: flex;
         flex-wrap: wrap;
+
+        >a {
+            margin: 8px;
+
+        }
     }
 }
 
@@ -16,5 +22,4 @@
     font-size: 18px;
     line-height: 29px;
     cursor: pointer;
-    margin: 8px;
 }
