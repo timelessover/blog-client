@@ -1,5 +1,5 @@
 import { Tag, Divider } from "antd";
-import styles from "./style.scss";
+import "./style.scss";
 import cx from "classnames";
 import Link from "next/link";
 import { random } from "lodash";
@@ -63,9 +63,9 @@ linkList.forEach((item: any) => {
 
 const TagList = () => {
   return (
-    <div className={cx("comm-box", styles["tag-container"])}>
-      <Divider className={cx(styles["tag-title"])}>标签云</Divider>
-      <div className={cx(styles["tag-list"])}>
+    <div className={cx("comm-box", "tag-container")}>
+      <Divider className={cx("tag-title")}>标签云</Divider>
+      <div className={cx("tag-list")}>
         {linkList.map((item: any) => {
           return (
             <Link href="/?id=dasdsa">

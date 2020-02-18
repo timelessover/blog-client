@@ -1,7 +1,6 @@
 import React from "react";
-import styles from "./style.scss";
 import cx from "classnames";
-import Link from 'next/link'
+import Link from "next/link";
 
 const menuList = [
   {
@@ -20,32 +19,61 @@ const menuList = [
     key: "message",
     type: "smile",
     name: "流言板",
-    href: '/message'
+    href: "/message"
   },
   {
     key: "about",
     type: "smile",
     name: "关于",
-    href: 'about'
+    href: "about"
   }
 ];
 
 import { Row, Col, Menu, Icon, Button, Divider, Affix } from "antd";
+
 const Header = () => (
+  
   <Affix>
-    <div className={cx(styles["header"])}>
+    <div className={cx("header")}>
+      <style jsx>{`
+        $height: 50px;
+        $themeColor: #1890ff;
+
+        .header {
+          background-color: #fff;
+          padding-top: 20px;
+          margin: 0 auto;
+          overflow: hidden;
+
+          .header-logo {
+            color: $themeColor;
+            font-size: 24px;
+            line-height: $height;
+          }
+
+          .btn-list {
+            line-height: $height;
+          }
+        }
+      `}</style>
+      <style jsx global>{`
+        $height: 50px;
+        .ant-menu {
+          line-height: $height;
+        }
+        .ant-menu-horizontal {
+          border-bottom: none;
+        }
+        .ant-menu-item {
+          font-size: 16px !important;
+          padding: 0 20px;
+        }
+      `}</style>
       <Row type="flex" justify="center">
         <Col xs={24} sm={24} md={8} lg={7} xl={5}>
-          <span className={cx(styles["header-logo"])}>Chris Liu 的博客空间</span>
+          <span className={cx("header-logo")}>Chris Liu 的博客空间</span>
         </Col>
-        <Col
-          className={cx(styles["memu-item"])}
-          xs={0}
-          sm={0}
-          md={10}
-          lg={10}
-          xl={10}
-        >
+        <Col className={cx("memu-item")} xs={0} sm={0} md={10} lg={10} xl={10}>
           <Menu mode="horizontal">
             {menuList.map(item => {
               return (
@@ -61,14 +89,7 @@ const Header = () => (
             })}
           </Menu>
         </Col>
-        <Col
-          className={cx(styles["btn-list"])}
-          xs={0}
-          sm={0}
-          md={6}
-          lg={4}
-          xl={4}
-        >
+        <Col className={cx("btn-list")} xs={0} sm={0} md={6} lg={4} xl={4}>
           <Button type="primary">登录</Button>
           <Divider type="vertical" />
           <Button type="default">注册</Button>

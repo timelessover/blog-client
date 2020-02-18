@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Head from 'next/head'
 import { Row, Col, Affix, Icon, Breadcrumb } from 'antd'
-import styles from './style.scss'
+import './style.scss'
 import cx from 'classnames'
 
 import Header from '../../components/Header'
@@ -93,11 +93,11 @@ const Detailed = () => {
         <Row className="comm-main" type="flex" justify="center">
           <Col xs={24} sm={24} md={24} lg={18} xl={12}>
             <div className="comm-left">
-              <div className={styles["detailed-title"]}>
+              <div className={"detailed-title"}>
                 React实战视频教程-技术胖Blog开发(更新08集)
               </div>
 
-              <div className={cx(styles["list-icon"], styles["center"])}>
+              <div className={cx("list-icon", "center")}>
                 <span>
                   <Icon type="calendar" /> 2019-06-28
                 </span>
@@ -117,7 +117,7 @@ const Detailed = () => {
               </div>
 
               <div
-                className={styles["detailed-content"]}
+                className="detailed-content"
                 dangerouslySetInnerHTML={{ __html: html }}
               ></div>
               <Approval />
@@ -131,10 +131,10 @@ const Detailed = () => {
             <Author />
             <Advert />
             <Affix offsetTop={71}>
-              <div className={cx(styles["detailed-nav"], "comm-box")}>
-                <div className={styles["nav-title"]}>文章目录</div>
+              <div className={cx("detailed-nav", "comm-box")}>
+                <div className="nav-title">文章目录</div>
                 <MarkNav
-                  className={styles["article-menu"]}
+                  className="article-menu"
                   source={markdown}
                   ordered={false}
                 />

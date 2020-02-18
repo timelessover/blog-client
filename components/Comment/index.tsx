@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Avatar, Divider, Input, Button } from "antd";
-import styles from "./style.scss";
+import "./style.scss";
 
 const { TextArea } = Input;
 
@@ -17,15 +17,16 @@ const Comment = () => {
   };
 
   return (
-    <div className={styles["container"]}>
+    <div className="container">
       <div>评论</div>
+      
       <TextArea
         value={comment}
         onChange={onChange}
         placeholder="请评论"
         autoSize={{ minRows: 3, maxRows: 5 }}
       />
-      <div className={styles["btn"]}>
+      <div className="btn">
         <Button
           type="primary"
           disabled={!comment ? true : false}

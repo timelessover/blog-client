@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import { Row, Col, List, Icon } from "antd";
-import styles from "./style.scss";
+import "./style.scss";
 import Header from "../components/Header";
 import Author from "../components/Author";
 import TagList from "../components/TagList";
@@ -49,15 +49,15 @@ const Home = () => {
               <List.Item>
                 <Row type="flex" justify="space-between">
                   <Col xs={24} sm={24} md={18} lg={18} xl={13}>
-                    <div className={cx(styles["container-left"])}>
+                    <div className={cx("container-left")}>
                       <Link href="/detailed">
                         <a>
-                          <div className={cx(styles["list-title"])}>
+                          <div className={cx("list-title")}>
                             {item.title}
                           </div>
                         </a>
                       </Link>
-                      <div className={cx(styles["list-icon"])}>
+                      <div className={cx("list-icon")}>
                         <span>
                           <Icon type="calendar" /> 2019-06-28
                         </span>
@@ -71,13 +71,13 @@ const Home = () => {
                           <Icon type="message" /> 0
                         </span>
                       </div>
-                      <div className={cx(styles["context"])}>
+                      <div className={cx("context")}>
                         {item.context}
                       </div>
                     </div>
                   </Col>
                   <Col xs={0} sm={0} md={6} lg={6} xl={6}>
-                    <div className={cx(styles["container-right"])}>
+                    <div className={cx("container-right")}>
                       <img
                         src={
                           item.cover ||

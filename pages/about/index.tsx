@@ -5,7 +5,7 @@ import Header from '../../components/Header'
 import Author from '../../components/Author'
 import TagList from '../../components/TagList'
 import Footer from '../../components/Footer'
-import styles from './style.scss'
+import './style.scss'
 import cx from 'classnames'
 
 

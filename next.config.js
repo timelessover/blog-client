@@ -1,16 +1,10 @@
 
-const withSass = require('@zeit/next-sass')
 const withCSS = require('@zeit/next-css');
-const { TypedCssModulesPlugin } = require('typed-css-modules-webpack-plugin');
+const withSass = require('@zeit/next-sass')
 
-const createTypedModules = (path) => {
-    return new TypedCssModulesPlugin({
-        globPattern: path,
-    })
-}
+
 
 module.exports = () => withCSS(Object.assign(withSass({
-    cssModules: true,
     cssLoaderOptions: {
         importLoaders: 1,
         localIdentName: "[local]___[hash:base64:5]",
@@ -23,14 +17,4 @@ module.exports = () => withCSS(Object.assign(withSass({
             }
         }
     },
-    webpack: (config) => {
-        if (!config.plugins) config.plugins = [];
-        config.plugins.push(
-            createTypedModules('pages/**/*.scss')
-        )
-        config.plugins.push(
-            createTypedModules('components/**/*.scss')
-        )
-        return config;
-    }
-}), { cssModules: false }))
+})))

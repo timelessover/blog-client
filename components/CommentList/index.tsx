@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Avatar, Divider, Input, Button, List, Skeleton, Icon } from "antd";
-import styles from "./style.scss";
+import "./style.scss";
 import Comment from "../Comment";
 
 const { TextArea } = Input;
@@ -37,8 +37,8 @@ const CommentList = () => {
   };
 
   return (
-    <div className={styles["container"]}>
-      <div className={styles["top-title"]}>
+    <div className="container">
+      <div className="top-title">
         <span>53 条评论</span>
       </div>
       <List
@@ -51,7 +51,7 @@ const CommentList = () => {
                 <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
               }
               title={
-                <div className={styles["user-container"]}>
+                <div className="user-container">
                   <div>{item.title}</div>
                   <div>2020-01-01 00:33:12</div>
                 </div>
