@@ -18,13 +18,13 @@ const menuList = [
   {
     key: "message",
     type: "smile",
-    name: "流言板",
+    name: "留言板",
     href: "/message"
   },
   {
     key: "about",
     type: "smile",
-    name: "关于",
+    name: "关于我",
     href: "about"
   }
 ];
