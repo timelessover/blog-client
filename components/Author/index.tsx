@@ -1,5 +1,4 @@
 import { Avatar, Divider, Icon } from "antd";
-import "./style.scss";
 import cx from "classnames";
 import Link from 'next/link'
 
@@ -32,38 +31,65 @@ const iconList = [
 
 const Author = () => {
   return (
-    <div className={cx("comm-box", "author-div")}>
-      <div>
-        <Avatar
-          size={100}
-          src="https://avatars2.githubusercontent.com/u/34708197?s=460&v=4"
-        />
-      </div>
-      <div className={cx("author-introduction")}>
-        一枚前端程序猿，全栈开发者
-        <br />
-        JavaScript，Golang爱好者
-        <Divider>社区账号</Divider>
-        <div className={cx('account-list')}>
-          {iconList.map((item,index) => {
-            return (
-              <Link href="">
-                <a>
-                  <Avatar
-                    key={index}
-                    size={36}
-                    icon={
-                      typeof item.icon === "string" ? item.icon : item.icon()
-                    }
-                    className={cx("account")}
-                  />
-                </a>
-              </Link>
-            );
-          })}
+    <>
+      <style jsx>{`
+        .author-div {
+          text-align: center;
+          padding: 14px;
+        }
+
+        .author-div div {
+          margin-bottom: 14px;
+        }
+
+        .author-introduction {
+          font-size: 16px;
+          color: #999;
+        }
+
+        .account-list {
+          display: flex;
+          justify-content: space-between;
+          margin: 0 auto;
+          width: 70%;
+        }
+        .account {
+          background-color: #999;
+        }
+      `}</style>
+      <div className={cx("comm-box", "author-div")}>
+        <div>
+          <Avatar
+            size={100}
+            src="https://avatars2.githubusercontent.com/u/34708197?s=460&v=4"
+          />
+        </div>
+        <div className={cx("author-introduction")}>
+          一枚前端程序猿，全栈开发者
+          <br />
+          JavaScript，Golang爱好者
+          <Divider>社区账号</Divider>
+          <div className={cx("account-list")}>
+            {iconList.map((item, index) => {
+              return (
+                <Link href="">
+                  <a>
+                    <Avatar
+                      key={index}
+                      size={36}
+                      icon={
+                        typeof item.icon === "string" ? item.icon : item.icon()
+                      }
+                      className={cx("account")}
+                    />
+                  </a>
+                </Link>
+              );
+            })}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

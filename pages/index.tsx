@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import { Row, Col, List, Icon } from "antd";
-import "./style.scss";
 import Header from "../components/Header";
 import Author from "../components/Author";
 import TagList from "../components/TagList";
@@ -35,6 +34,37 @@ const Home = () => {
   ]);
   return (
     <>
+      <style jsx>{`
+        .list-title {
+          font-size: 24px;
+          color: #1890ff;
+          padding: 0 5px;
+        }
+
+        .list-icon {
+          padding: 0.5rem 0;
+          color: #aaa;
+        }
+        .list-icon span {
+          display: inline-block;
+          padding: 0 10px;
+        }
+
+        .context {
+          color: #777;
+          padding: 5px;
+        }
+
+        .container-right {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        .container-right img {
+          width: 150px;
+          height: 100px;
+        }
+      `}</style>
       <Head>
         <title>Home</title>
       </Head>
@@ -52,9 +82,7 @@ const Home = () => {
                     <div className={cx("container-left")}>
                       <Link href="/detailed">
                         <a>
-                          <div className={cx("list-title")}>
-                            {item.title}
-                          </div>
+                          <div className={cx("list-title")}>{item.title}</div>
                         </a>
                       </Link>
                       <div className={cx("list-icon")}>
@@ -71,9 +99,7 @@ const Home = () => {
                           <Icon type="message" /> 0
                         </span>
                       </div>
-                      <div className={cx("context")}>
-                        {item.context}
-                      </div>
+                      <div className={cx("context")}>{item.context}</div>
                     </div>
                   </Col>
                   <Col xs={0} sm={0} md={6} lg={6} xl={6}>

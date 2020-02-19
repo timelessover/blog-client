@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Avatar, Divider, Input, Button } from "antd";
-import "./style.scss";
 
 const { TextArea } = Input;
 
@@ -19,7 +18,24 @@ const Comment = () => {
   return (
     <div className="container">
       <div>评论</div>
-      
+      <style jsx>{`
+        .container {
+          background: #fff;
+          text-align: center;
+          width: 100%;
+          padding: 1rem;
+          color: #888;
+          margin-top: 10px;
+        }
+        .btn {
+          text-align: left;
+          margin-top: 10px;
+        }
+        .icon-action {
+          margin-top: 16px;
+          margin-left: auto;
+        }
+      `}</style>
       <TextArea
         value={comment}
         onChange={onChange}
