@@ -7,18 +7,22 @@ import TagList from "../components/TagList";
 import Footer from "../components/Footer";
 import cx from "classnames";
 import Link from "next/link";
-import fetch from "isomorphic-unfetch";
+import { getArticleList, getTagList } from "../api";
 import { timestampToTime } from "../utlis/utils";
 
 const Home = props => {
   const [list, setList] = useState([]);
+  const [listTitle, setListTitle] = useState("");
 
   const fetchData = async () => {
     const res = await fetch(
       `http://127.0.0.1:9000/api/articlelist${props.url.asPath}`
     );
     const json = await res.json();
-    setList(json);
+    setList(json.data);
+    setListTitle(
+      json.categroy?json.categroy.name + " 相关的文章" : "最新文章"
+    );
   };
 
 
@@ -66,7 +70,7 @@ const Home = props => {
       <Row className="comm-main" type="flex" justify="center">
         <Col className="comm-left" xs={24} sm={24} md={24} lg={18} xl={12}>
           <List
-            header={<div>最新日志</div>}
+            header={<div>{listTitle} :</div>}
             itemLayout="vertical"
             dataSource={props.url.asPath === '/'?props.list:list}
             renderItem={(item: any) => (
@@ -74,7 +78,7 @@ const Home = props => {
                 <Row type="flex" justify="space-between">
                   <Col xs={24} sm={24} md={18} lg={18} xl={13}>
                     <div className={cx("container-left")}>
-                      <Link href="/detailed">
+                      <Link href={`/detailed?article_id=${item._id}`}>
                         <a>
                           <div className={cx("list-title")}>{item.title}</div>
                         </a>
@@ -117,7 +121,7 @@ const Home = props => {
 
         <Col className="comm-right" xs={0} sm={0} md={0} lg={6} xl={5}>
           <Author />
-          <TagList taglist={props.taglist || []} />
+          <TagList taglist={props.taglist} />
         </Col>
       </Row>
       <Footer />
@@ -125,12 +129,12 @@ const Home = props => {
   );
 };
 
+
+
 Home.getInitialProps = async () => {
-  const res = await fetch("http://127.0.0.1:9000/api/articles");
-  const json = await res.json();
-  const res1 = await fetch("http://127.0.0.1:9000/api/categories");
-  const json1 = await res1.json();
-  return { list: json, taglist: json1 };
+  const list = await getArticleList();
+  const taglist = await getTagList();
+  return { list, taglist };
 };
 
 export default Home;
