@@ -15,50 +15,12 @@ const colorList = [
   "purple"
 ];
 
-const linkList = [
-  {
-    tag: "vue"
-  },
-  {
-    tag: "react"
-  },
-  {
-    tag: "js"
-  },
-  {
-    tag: "vue"
-  },
-  {
-    tag: "react"
-  },
-  {
-    tag: "js"
-  },
-  {
-    tag: "vue"
-  },
-  {
-    tag: "react"
-  },
-  {
-    tag: "js"
-  },
-  {
-    tag: "vue"
-  },
-  {
-    tag: "react"
-  },
-  {
-    tag: "js"
-  }
-];
+const TagList = (props: any) => {
+  props.taglist &&
+    props.taglist.forEach((item: any) => {
+      item.color = colorList[Math.floor(random(0, colorList.length))];
+    });
 
-linkList.forEach((item: any) => {
-  item.color = colorList[Math.floor(random(0, colorList.length))];
-});
-
-const TagList = () => {
   return (
     <>
       <style jsx>{`
@@ -88,15 +50,18 @@ const TagList = () => {
       <div className={cx("comm-box", "tag-container")}>
         <Divider className={cx("tag-title")}>标签云</Divider>
         <div className={cx("tag-list")}>
-          {linkList.map((item: any) => {
-            return (
-              <Link href="/?id=dasdsa">
-                <a>
-                  <Tag color={item.color}>{item.tag}</Tag>
-                </a>
-              </Link>
-            );
-          })}
+          {props.taglist &&
+            props.taglist.map((item: any) => {
+              return (
+                <Link href={`?categroy_id=${item._id}`} key={item._id}>
+                  <a>
+                    <Tag color={item.color}>
+                      {item.name}({item.article_num})
+                    </Tag>
+                  </a>
+                </Link>
+              );
+            })}
         </div>
       </div>
     </>

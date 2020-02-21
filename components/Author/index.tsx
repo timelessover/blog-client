@@ -72,10 +72,9 @@ const Author = () => {
           <div className={cx("account-list")}>
             {iconList.map((item, index) => {
               return (
-                <Link href="">
+                <Link href="" key={index}>
                   <a>
                     <Avatar
-                      key={index}
                       size={36}
                       icon={
                         typeof item.icon === "string" ? item.icon : item.icon()

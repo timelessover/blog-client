@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
 import { Row, Col, List, Icon } from "antd";
 import Header from "../components/Header";
@@ -7,31 +7,25 @@ import TagList from "../components/TagList";
 import Footer from "../components/Footer";
 import cx from "classnames";
 import Link from "next/link";
+import fetch from "isomorphic-unfetch";
+import { timestampToTime } from "../utlis/utils";
+
+const Home = props => {
+  const [list, setList] = useState([]);
+
+  const fetchData = async () => {
+    const res = await fetch(
+      `http://127.0.0.1:9000/api/articlelist${props.url.asPath}`
+    );
+    const json = await res.json();
+    setList(json);
+  };
 
 
-const Home = () => {
-  const [mylist, setMylist] = useState([
-    {
-      title: "50元加入小密圈 胖哥带你学一年",
-      context:
-        "也许你遇到了成长瓶颈，也许你不知道该学习什么知识，也许你不会融入团队。"
-    },
-    {
-      title: "React实战视频教程-技术胖Blog开发(更新04集)",
-      context:
-        "也许你遇到了成长瓶颈，也许你不知道该学习什么知识，也许你不会融入团队。"
-    },
-    {
-      title: "React服务端渲染框架Next.js入门(共12集)",
-      context:
-        "也许你遇到了成长瓶颈，也许你不知道该学习什么知识，也许你不会融入团队。"
-    },
-    {
-      title: "React Hooks 免费视频教程(共11集)",
-      context:
-        "也许你遇到了成长瓶颈，也许你不知道该学习什么知识，也许你不会融入团队。"
-    }
-  ]);
+  useEffect(() => {
+    fetchData();
+  }, [props.url.asPath]);
+
   return (
     <>
       <style jsx>{`
@@ -74,7 +68,7 @@ const Home = () => {
           <List
             header={<div>最新日志</div>}
             itemLayout="vertical"
-            dataSource={mylist}
+            dataSource={props.url.asPath === '/'?props.list:list}
             renderItem={(item: any) => (
               <List.Item>
                 <Row type="flex" justify="space-between">
@@ -85,21 +79,23 @@ const Home = () => {
                           <div className={cx("list-title")}>{item.title}</div>
                         </a>
                       </Link>
+
+                      <div className={cx("context")}>{item.introduce}</div>
                       <div className={cx("list-icon")}>
                         <span>
-                          <Icon type="calendar" /> 2019-06-28
+                          <Icon type="calendar" />{" "}
+                          {timestampToTime(item.update_time, false)}
                         </span>
                         <span>
-                          <Icon type="fire" /> 5498
+                          <Icon type="fire" /> {item.view_count}
                         </span>
                         <span>
-                          <Icon type="like" /> 0
+                          <Icon type="like" /> {item.likes_count}
                         </span>
                         <span>
-                          <Icon type="message" /> 0
+                          <Icon type="message" /> {item.comment_count}
                         </span>
                       </div>
-                      <div className={cx("context")}>{item.context}</div>
                     </div>
                   </Col>
                   <Col xs={0} sm={0} md={6} lg={6} xl={6}>
@@ -121,12 +117,20 @@ const Home = () => {
 
         <Col className="comm-right" xs={0} sm={0} md={0} lg={6} xl={5}>
           <Author />
-          <TagList />
+          <TagList taglist={props.taglist || []} />
         </Col>
       </Row>
       <Footer />
     </>
   );
+};
+
+Home.getInitialProps = async () => {
+  const res = await fetch("http://127.0.0.1:9000/api/articles");
+  const json = await res.json();
+  const res1 = await fetch("http://127.0.0.1:9000/api/categories");
+  const json1 = await res1.json();
+  return { list: json, taglist: json1 };
 };
 
 export default Home;
