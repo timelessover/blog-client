@@ -7,8 +7,19 @@ import TagList from "../components/TagList";
 import Footer from "../components/Footer";
 import cx from "classnames";
 import Link from "next/link";
-import { getArticleList, getTagList } from "../api";
+import { getArticleList, getTagList, getGithubUser } from "../api";
 import { timestampToTime } from "../utlis/utils";
+
+//根据 QueryString 参数名称获取值
+function getQueryStringByName(name: string) {
+  let result = window.location.search.match(
+    new RegExp("[?&]" + name + "=([^&]+)", "i")
+  );
+  if (result == null || result.length < 1) {
+    return "";
+  }
+  return result[1];
+}
 
 const Home = props => {
   const [list, setList] = useState([]);
@@ -21,10 +32,19 @@ const Home = props => {
     const json = await res.json();
     setList(json.data);
     setListTitle(
-      json.categroy?json.categroy.name + " 相关的文章" : "最新文章"
+      json.categroy ? json.categroy.name + " 相关的文章" : "最新文章"
     );
   };
 
+  const fetchGithubUser = async (code: string) => {
+    const res = await getGithubUser({ code });
+    window.location.href = "http://localhost:3000";
+  };
+
+  useEffect(() => {
+    const code = getQueryStringByName("code");
+    code && fetchGithubUser(code);
+  }, []);
 
   useEffect(() => {
     fetchData();
@@ -72,7 +92,7 @@ const Home = props => {
           <List
             header={<div>{listTitle} :</div>}
             itemLayout="vertical"
-            dataSource={props.url.asPath === '/'?props.list:list}
+            dataSource={props.url.asPath === "/" ? props.list : list}
             renderItem={(item: any) => (
               <List.Item>
                 <Row type="flex" justify="space-between">
@@ -128,8 +148,6 @@ const Home = props => {
     </>
   );
 };
-
-
 
 Home.getInitialProps = async () => {
   const list = await getArticleList();

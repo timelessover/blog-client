@@ -125,7 +125,7 @@ const Detailed = (props) => {
                 <Icon type="calendar" /> {timestampToTime(update_time,false)}
               </span>
               <span>
-                <Icon type="folder" /> {category.name}
+                <Icon type="folder" /> {category[0].name}
               </span>
               <span>
                 <Icon type="fire" /> {view_count}

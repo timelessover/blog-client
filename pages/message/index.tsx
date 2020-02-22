@@ -19,6 +19,17 @@ const Home = props => {
     });
   };
   const { getFieldDecorator } = props.form;
+
+   const formItemLayout = {
+     labelCol: {
+       xs: { span: 24 },
+       sm: { span: 4 }
+     },
+     wrapperCol: {
+       xs: { span: 24 },
+       sm: { span: 20 }
+     }
+   };
   return (
     <>
       <style jsx>{`
@@ -43,14 +54,13 @@ const Home = props => {
         }
       `}</style>
       <style jsx global>{`
-        .flex-box {
-        }
         .login-form {
-          width: 80%;
+          max-width: 800px;
           margin: 50px auto;
         }
-        .comm-left {
-          min-height: 80vh;
+
+        .login-form-button {
+          margin-top: 20px;
         }
       `}</style>
       <Head>
@@ -66,7 +76,11 @@ const Home = props => {
           lg={18}
           xl={12}
         >
-          <Form onSubmit={handleSubmit} className="login-form">
+          <Form
+            onSubmit={handleSubmit}
+            className="login-form"
+            {...formItemLayout}
+          >
             <Form.Item label="姓名">
               {getFieldDecorator("username", {
                 rules: [{ required: true, message: "请输入您的姓名" }]
@@ -89,7 +103,20 @@ const Home = props => {
                     <Icon type="phone" style={{ color: "rgba(0,0,0,.25)" }} />
                   }
                   size="large"
-                  placeholder="手机号或微信号"
+                  placeholder="请输入手机号或微信号"
+                />
+              )}
+            </Form.Item>
+            <Form.Item label="邮箱">
+              {getFieldDecorator("e-mail", {
+                rules: [{ required: true, message: "请输入您的邮箱" }]
+              })(
+                <Input
+                  prefix={
+                    <Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />
+                  }
+                  size="large"
+                  placeholder="请输入您的邮箱"
                 />
               )}
             </Form.Item>
@@ -102,16 +129,16 @@ const Home = props => {
                   autoSize={{ minRows: 8, maxRows: 10 }}
                 ></TextArea>
               )}
+              <Button
+                type="primary"
+                htmlType="submit"
+                size="large"
+                block
+                className="login-form-button"
+              >
+                提交
+              </Button>
             </Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              size="large"
-              block
-              className="login-form-button"
-            >
-              提交
-            </Button>
           </Form>
         </Col>
 
