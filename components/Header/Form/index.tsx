@@ -34,6 +34,10 @@ const config = {
 
 const githubAuthorization = () => {
   let dataStr = new Date().valueOf();
+  window.localStorage.setItem(
+    "LOGINHREF",
+    JSON.stringify(window.location.href || "")
+  );
   //重定向到认证接口,并配置参数
   let path = `https://github.com/login/oauth/authorize?client_id=${config.client_id}&scope=${config.scope}&state=${dataStr}`;
   window.location.href = path;
@@ -103,7 +107,7 @@ const RegisterForm = props => {
       {...formItemLayout}
     >
       <Form.Item label="邮箱">
-        {getFieldDecorator("e-mail", {
+        {getFieldDecorator("email", {
           rules: [{ required: true, message: "请输入您的邮箱！" }]
         })(<Input placeholder="请输入您的邮箱，交个朋友" />)}
       </Form.Item>
@@ -117,13 +121,8 @@ const RegisterForm = props => {
           rules: [{ required: true, message: "请输入您的昵称！" }]
         })(<Input placeholder="请输入您的昵称" />)}
       </Form.Item>
-      <Form.Item label="手机号">
-        {getFieldDecorator("phone", {
-          rules: [{ required: true, message: "请输入您的手机号！" }]
-        })(<Input placeholder="请输入您的手机号" />)}
-      </Form.Item>
       <Form.Item label="个人主页">
-        {getFieldDecorator("userpage", {
+        {getFieldDecorator("homepage", {
           rules: [{ required: true, message: "请输入您的个人主页地址！" }]
         })(<Input placeholder="请输入您的个人主页地址" />)}
       </Form.Item>

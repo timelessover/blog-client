@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import cx from "classnames";
 import Link from "next/link";
 import From from "./Form";
@@ -36,19 +36,33 @@ import {
   Row,
   Col,
   Menu,
-  Icon,
   Button,
   Divider,
   Affix,
   Form,
   Input,
-  Modal
+  Modal,
+  Avatar,
+  Dropdown,
+  Icon,
+  message
 } from "antd";
+
+const { confirm } = Modal;
 
 const Header = props => {
   const [visible, setVisible] = useState(false);
-  const [isLogin, setIsLogin] = useState(0); // 0：登录，1: 注册
-  // const [confirmDirty, setConfirmDirty] = useState(false);
+  const [isLogin, setIsLogin] = useState(0); // 0：登录表单，1: 注册表单
+  const [userLogin, setUserLogin] = useState(false); // 用户登录
+  const [user, setUser] = useState({ username: "", avatar: "" });
+
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if (userInfo) {
+      setUserLogin(true);
+      setUser(userInfo);
+    }
+  }, []);
 
   const login = () => {
     setIsLogin(1);
@@ -63,14 +77,57 @@ const Header = props => {
     setVisible(false);
   };
 
+  const showConfirm = (e) => {
+    e.preventDefault();
+    confirm({
+      title: "你真的要退出登录吗？",
+      content: "登录状态可对文章进行点赞和评论",
+      okText: "确定",
+      cancelText: "取消",
+      onOk() {
+        loginOut();
+      },
+      onCancel() {
+        message.success("取消成功");
+      }
+    });
+  }
 
- 
+  const loginOut = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem("userInfo");
+    setUserLogin(false);
+    message.success("账号已登出");
+  }
 
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <a onClick={showConfirm}>登出</a>
+      </Menu.Item>
+    </Menu>
+  );
 
-
-  
-
-
+  const UserInfo = () => (
+    <Dropdown overlay={menu}>
+      <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+        <Avatar src={user.avatar} size={36} />
+        <Divider type="vertical" />
+        {user.username}
+      </a>
+    </Dropdown>
+  );
+  const LoginBtnList = () => (
+    <>
+      <Button type="primary" onClick={login}>
+        登录
+      </Button>
+      <Divider type="vertical" />
+      <Button type="default" onClick={register}>
+        注册
+      </Button>
+    </>
+  );
 
   return (
     <>
@@ -107,6 +164,9 @@ const Header = props => {
           font-size: 16px !important;
           padding: 0 20px;
         }
+        .ant-dropdown-link {
+          padding-bottom: 12px;
+        }
       `}</style>
       <Affix>
         <div className={cx("header")}>
@@ -138,13 +198,7 @@ const Header = props => {
               </Menu>
             </Col>
             <Col className={cx("btn-list")} xs={0} sm={0} md={6} lg={4} xl={4}>
-              <Button type="primary" onClick={login}>
-                登录
-              </Button>
-              <Divider type="vertical" />
-              <Button type="default" onClick={register}>
-                注册
-              </Button>
+              {userLogin ? <UserInfo /> : <LoginBtnList />}
             </Col>
           </Row>
         </div>

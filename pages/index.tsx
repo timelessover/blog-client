@@ -24,6 +24,9 @@ function getQueryStringByName(name: string) {
 const Home = props => {
   const [list, setList] = useState([]);
   const [listTitle, setListTitle] = useState("");
+  const [isLogin, setIsLogin] = useState(false);
+
+  
 
   const fetchData = async () => {
     const res = await fetch(
@@ -36,15 +39,8 @@ const Home = props => {
     );
   };
 
-  const fetchGithubUser = async (code: string) => {
-    const res = await getGithubUser({ code });
-    window.location.href = "http://localhost:3000";
-  };
 
-  useEffect(() => {
-    const code = getQueryStringByName("code");
-    code && fetchGithubUser(code);
-  }, []);
+
 
   useEffect(() => {
     fetchData();
@@ -89,54 +85,54 @@ const Home = props => {
       <Header />
       <Row className="comm-main" type="flex" justify="center">
         <Col className="comm-left" xs={24} sm={24} md={24} lg={18} xl={12}>
-          <List
-            header={<div>{listTitle} :</div>}
-            itemLayout="vertical"
-            dataSource={props.url.asPath === "/" ? props.list : list}
-            renderItem={(item: any) => (
-              <List.Item>
-                <Row type="flex" justify="space-between">
-                  <Col xs={24} sm={24} md={18} lg={18} xl={13}>
-                    <div className={cx("container-left")}>
-                      <Link href={`/detailed?article_id=${item._id}`}>
-                        <a>
-                          <div className={cx("list-title")}>{item.title}</div>
-                        </a>
-                      </Link>
+            <List
+              header={<div>{listTitle} :</div>}
+              itemLayout="vertical"
+              dataSource={props.url.asPath === "/" ? props.list : list}
+              renderItem={(item: any) => (
+                <List.Item>
+                  <Row type="flex" justify="space-between">
+                    <Col xs={24} sm={24} md={18} lg={18} xl={13}>
+                      <div className={cx("container-left")}>
+                        <Link href={`/detailed?article_id=${item._id}`}>
+                          <a>
+                            <div className={cx("list-title")}>{item.title}</div>
+                          </a>
+                        </Link>
 
-                      <div className={cx("context")}>{item.introduce}</div>
-                      <div className={cx("list-icon")}>
-                        <span>
-                          <Icon type="calendar" />{" "}
-                          {timestampToTime(item.update_time, false)}
-                        </span>
-                        <span>
-                          <Icon type="fire" /> {item.view_count}
-                        </span>
-                        <span>
-                          <Icon type="like" /> {item.likes_count}
-                        </span>
-                        <span>
-                          <Icon type="message" /> {item.comment_count}
-                        </span>
+                        <div className={cx("context")}>{item.introduce}</div>
+                        <div className={cx("list-icon")}>
+                          <span>
+                            <Icon type="calendar" />{" "}
+                            {timestampToTime(item.update_time, false)}
+                          </span>
+                          <span>
+                            <Icon type="fire" /> {item.view_count}
+                          </span>
+                          <span>
+                            <Icon type="like" /> {item.likes_count}
+                          </span>
+                          <span>
+                            <Icon type="message" /> {item.comment_count}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </Col>
-                  <Col xs={0} sm={0} md={6} lg={6} xl={6}>
-                    <div className={cx("container-right")}>
-                      <img
-                        src={
-                          item.cover ||
-                          "https://upload-images.jianshu.io/upload_images/12890819-3a7d6ee6564f9407.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
-                        }
-                        alt=""
-                      />
-                    </div>
-                  </Col>
-                </Row>
-              </List.Item>
-            )}
-          />
+                    </Col>
+                    <Col xs={0} sm={0} md={6} lg={6} xl={6}>
+                      <div className={cx("container-right")}>
+                        <img
+                          src={
+                            item.cover ||
+                            "https://upload-images.jianshu.io/upload_images/12890819-3a7d6ee6564f9407.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"
+                          }
+                          alt=""
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                </List.Item>
+              )}
+            />
         </Col>
 
         <Col className="comm-right" xs={0} sm={0} md={0} lg={6} xl={5}>
