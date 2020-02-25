@@ -18,11 +18,12 @@ import marked from "marked";
 import hljs from "highlight.js";
 import "highlight.js/styles/monokai-sublime.css";
 
-import {getArticleById} from '../../api';
+import { getArticleById, isLikeArticle } from "../../api";
 import { timestampToTime } from "../../utlis/utils";
 
 const Detailed = (props) => {
 
+   
    const {
      title,
      content,
@@ -122,7 +123,7 @@ const Detailed = (props) => {
 
             <div className={cx("list-icon", "center")}>
               <span>
-                <Icon type="calendar" /> {timestampToTime(update_time,false)}
+                <Icon type="calendar" /> {timestampToTime(update_time, false)}
               </span>
               <span>
                 <Icon type="folder" /> {category[0].name}
@@ -143,7 +144,7 @@ const Detailed = (props) => {
               className="detailed-content"
               dangerouslySetInnerHTML={{ __html: html }}
             ></div>
-            <Approval />
+            <Approval article_id={props.article_id} />
           </div>
 
           <Comment />
@@ -179,7 +180,7 @@ const getTagList = async () =>{
 
 Detailed.getInitialProps = async (ctx) => {
   const data = await getArticleById(ctx.query.article_id);
-  return { data };
+  return { data, article_id: ctx.query.article_id };
 };
 
 export default Detailed;

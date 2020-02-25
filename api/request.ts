@@ -1,7 +1,6 @@
 import fetch from "isomorphic-unfetch";
 const host = "http://127.0.0.1:9000";
 
-
 /**
  * Requests a URL, returning a promise.
  *
@@ -15,6 +14,7 @@ export const post = async (url, params) => {
     body: JSON.stringify(params),
     headers: {
       "content-type": "application/json",
+      'Authorization': window ? "Bearer " + JSON.parse(localStorage.getItem("token")) || "" : ""
     }
   };
 
@@ -26,7 +26,6 @@ export const post = async (url, params) => {
 };
 
 export const get = async url => {
-
   const response = await fetch(host + url);
 
   const data = await response.json();
