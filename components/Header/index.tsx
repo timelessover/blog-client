@@ -62,7 +62,7 @@ const Header = props => {
       setUserLogin(true);
       setUser(userInfo);
     }
-  }, []);
+  }, [visible]);
 
   const login = () => {
     setIsLogin(1);
@@ -209,7 +209,11 @@ const Header = props => {
         footer={null}
         onCancel={handleCancel}
       >
-        {isLogin === 0 ? <RegisterForm /> : <LoginForm />}
+        {isLogin === 0 ? (
+          <RegisterForm onCancel={handleCancel}  />
+        ) : (
+          <LoginForm onCancel={handleCancel}  />
+        )}
       </Modal>
     </>
   );

@@ -15,3 +15,11 @@ export const getGithubUser = (params:any) => {
   return post("/api/github/login", params);
 };
 
+export const register = (params: any) => {
+  return post("/api/register/general", params);
+};
+
+export const login = (params: any) => {
+  return post("/api/login/general", params);
+};
+

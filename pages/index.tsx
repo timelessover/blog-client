@@ -10,16 +10,6 @@ import Link from "next/link";
 import { getArticleList, getTagList, getGithubUser } from "../api";
 import { timestampToTime } from "../utlis/utils";
 
-//根据 QueryString 参数名称获取值
-function getQueryStringByName(name: string) {
-  let result = window.location.search.match(
-    new RegExp("[?&]" + name + "=([^&]+)", "i")
-  );
-  if (result == null || result.length < 1) {
-    return "";
-  }
-  return result[1];
-}
 
 const Home = props => {
   const [list, setList] = useState([]);
