@@ -4,7 +4,7 @@ import Comment from "../Comment";
 
 const { TextArea } = Input;
 
-const CommentList = () => {
+const CommentList = (props:any) => {
   const data = [
     {
       title: "Ant Design Title 1"

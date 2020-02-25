@@ -1,18 +1,29 @@
 import React, { useState } from "react";
-import { Avatar, Divider, Input, Button } from "antd";
+import { Avatar, Divider, Input, Button,message } from "antd";
+import {addComment} from '../../api'
 
 const { TextArea } = Input;
 
-const Comment = () => {
+const Comment = (props:any) => {
   const [comment, setComment] = useState("");
+  const { article_id, userLogin } = props
+  
 
   const onChange = ({ target: { value } }) => {
     setComment(value);
   };
 
-  const handleSubmit = () => {
-    console.log(2);
-    console.log(comment);
+  const handleSubmit = async () => {
+    if (userLogin){
+      const body = {
+        article_id,
+        content: comment
+      };
+      const res = await addComment(body);
+      console.log(res)
+    }else{
+      message.error('登录后可评论')
+    }
   };
 
   return (

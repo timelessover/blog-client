@@ -30,3 +30,9 @@ export const updateLikeArticle = (params: any) => {
 export const isLikeArticle = (params: any) => {
   return post("/api/like", params);
 };
+
+export const addComment = (params: any) => {
+  return post("/api/comment/add", params);
+};
+
+

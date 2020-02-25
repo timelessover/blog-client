@@ -21,19 +21,16 @@ import "highlight.js/styles/monokai-sublime.css";
 import { getArticleById, isLikeArticle } from "../../api";
 import { timestampToTime } from "../../utlis/utils";
 
-const Detailed = (props) => {
-
-   
-   const {
-     title,
-     content,
-     update_time,
-     view_count,
-     likes_count,
-     comment_count,
-     category
-   } = props.data;
-
+const Detailed = props => {
+  const {
+    title,
+    content,
+    update_time,
+    view_count,
+    likes_count,
+    comment_count,
+    category
+  } = props.data;
 
   const renderer = new marked.Renderer();
 
@@ -53,7 +50,12 @@ const Detailed = (props) => {
 
   let html = marked(content);
 
- 
+  const [userLogin, setUserLogin] = useState(false); // 用户登录
+
+  const handleUserLogin = event => {
+    setUserLogin(event);
+  };
+
   return (
     <>
       <style jsx>{`
@@ -115,7 +117,7 @@ const Detailed = (props) => {
       <Head>
         <title>博客详细页</title>
       </Head>
-      <Header />
+      <Header handleUserLogin={handleUserLogin} />
       <Row className="comm-main" type="flex" justify="center">
         <Col xs={24} sm={24} md={24} lg={18} xl={12}>
           <div className="comm-left">
@@ -144,11 +146,11 @@ const Detailed = (props) => {
               className="detailed-content"
               dangerouslySetInnerHTML={{ __html: html }}
             ></div>
-            <Approval article_id={props.article_id} />
+            <Approval article_id={props.article_id} userLogin={userLogin} />
           </div>
 
-          <Comment />
-          <CommentList />
+          <Comment article_id={props.article_id} userLogin={userLogin} />
+          <CommentList article_id={props.article_id} userLogin={userLogin} />
         </Col>
 
         <Col className="comm-right" xs={0} sm={0} md={0} lg={6} xl={5}>
@@ -165,20 +167,19 @@ const Detailed = (props) => {
   );
 };
 
-
-const getArticleList = async() =>{
+const getArticleList = async () => {
   const res = await fetch("http://127.0.0.1:9000/api/articles");
   const json = await res.json();
-  return json
-}
+  return json;
+};
 
-const getTagList = async () =>{
-   const res = await fetch("http://127.0.0.1:9000/api/categories");
-   const json = await res.json();
-   return json
-}
+const getTagList = async () => {
+  const res = await fetch("http://127.0.0.1:9000/api/categories");
+  const json = await res.json();
+  return json;
+};
 
-Detailed.getInitialProps = async (ctx) => {
+Detailed.getInitialProps = async ctx => {
   const data = await getArticleById(ctx.query.article_id);
   return { data, article_id: ctx.query.article_id };
 };

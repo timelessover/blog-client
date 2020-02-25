@@ -3,21 +3,30 @@ import { isLikeArticle, updateLikeArticle } from "../../api";
 import { useState, useEffect } from "react";
 
 const Approval = props => {
-  const { article_id } = props;
-
+  const { article_id, userLogin } = props;
   const [isLike, setIsLike] = useState(false);
+  
+
+  useEffect(() => {
+    console.log(userLogin);
+    if (userLogin) {
+      fetchIsLike();
+    }
+  }, [userLogin]);
+
 
   const fetchIsLike = async () => {
     const res = await isLikeArticle({ article_id });
     setIsLike(res.is_zan);
   };
-  useEffect(() => {
-    fetchIsLike();
-  }, []);
 
   const hanleToggleLike = async () => {
-    const res = await updateLikeArticle({ article_id });
-    setIsLike(res.is_zan);
+    if (!userLogin){
+      message.error('登录后才可点赞')
+    }else{
+      const res = await updateLikeArticle({ article_id });
+      setIsLike(res.is_zan);
+    }
   };
 
   return (
