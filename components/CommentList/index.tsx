@@ -10,17 +10,17 @@ const CommentList = (props:any) => {
   const [commentList, setCommentList] = useState([]);
   const [commentCount,setCommentCount] = useState(0)
 
-  const fetchCommentList =  async ()=>{
+  const fetchCommentList =  async () => {
     const res = await getCommentlist(props.article_id);
     setCommentCount(res.count);
     setCommentList(res.data)
   } 
 
   useEffect(() => {
-    if(props.article_id){
-      fetchCommentList()
+    if (props.article_id) {
+      fetchCommentList();
     }
-  }, [props.article_id]);
+  }, [props.isComment]);
 
   const IconText = ({ type, text, onClick }: any) => (
     <span onClick={onClick}>

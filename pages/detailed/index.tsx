@@ -32,8 +32,6 @@ const Detailed = props => {
     category
   } = props.data;
 
-  
-
   const renderer = new marked.Renderer();
 
   marked.setOptions({
@@ -53,6 +51,11 @@ const Detailed = props => {
   let html = marked(content);
 
   const [userLogin, setUserLogin] = useState(false); // 用户登录
+  const [isComment, setIsComment] = useState(false); // 更新评论
+
+  const handleIsFetchList = e => {
+    setIsComment(e)
+  };
 
   const handleUserLogin = event => {
     setUserLogin(event);
@@ -151,8 +154,16 @@ const Detailed = props => {
             <Approval article_id={props.article_id} userLogin={userLogin} />
           </div>
 
-          <Comment article_id={props.article_id} userLogin={userLogin} />
-          <CommentList article_id={props.article_id} userLogin={userLogin} />
+          <Comment
+            article_id={props.article_id}
+            userLogin={userLogin}
+            handleIsFetchList={handleIsFetchList}
+          />
+          <CommentList
+            article_id={props.article_id}
+            userLogin={userLogin}
+            isComment={isComment}
+          />
         </Col>
 
         <Col className="comm-right" xs={0} sm={0} md={0} lg={6} xl={5}>

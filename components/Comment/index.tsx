@@ -1,34 +1,37 @@
 import React, { useState } from "react";
-import { Avatar, Divider, Input, Button,message } from "antd";
-import {addComment} from '../../api'
+import { Avatar, Divider, Input, Button, message } from "antd";
+import { addComment } from "../../api";
 
 const { TextArea } = Input;
 
-const Comment = (props:any) => {
+const Comment = (props: any) => {
   const [comment, setComment] = useState("");
-  const { article_id, userLogin } = props
-  
+  const { article_id, userLogin } = props;
 
   const onChange = ({ target: { value } }) => {
     setComment(value);
   };
 
+  const [isComment, setIsComment] = useState(false); // 更新评论
+
   const handleSubmit = async () => {
-    if (userLogin){
+    if (userLogin) {
       const body = {
         article_id,
         content: comment
       };
       const res = await addComment(body);
-      const {code} = res
-      if(!code){
+      const { code } = res;
+      if (!code) {
         message.success("评论成功");
-        setComment('')
-      }else{
+        setComment("");
+        setIsComment(!isComment);
+        props.handleIsFetchList(!isComment);
+      } else {
         message.error("评论失败");
       }
-    }else{
-      message.error('登录后可评论')
+    } else {
+      message.error("登录后可评论");
     }
   };
 
