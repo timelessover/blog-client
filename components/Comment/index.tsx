@@ -20,7 +20,13 @@ const Comment = (props:any) => {
         content: comment
       };
       const res = await addComment(body);
-      console.log(res)
+      const {code} = res
+      if(!code){
+        message.success("评论成功");
+        setComment('')
+      }else{
+        message.error("评论失败");
+      }
     }else{
       message.error('登录后可评论')
     }

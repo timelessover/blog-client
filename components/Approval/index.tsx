@@ -8,7 +8,6 @@ const Approval = props => {
   
 
   useEffect(() => {
-    console.log(userLogin);
     if (userLogin) {
       fetchIsLike();
     }

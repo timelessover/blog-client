@@ -32,6 +32,8 @@ const Detailed = props => {
     category
   } = props.data;
 
+  
+
   const renderer = new marked.Renderer();
 
   marked.setOptions({

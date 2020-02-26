@@ -1,24 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { Avatar, Divider, Input, Button, List, Skeleton, Icon } from "antd";
 import Comment from "../Comment";
+import { getCommentlist} from "../../api";
+import { timestampToTime, getDateDiff } from "../../utlis/utils";
 
 const { TextArea } = Input;
 
 const CommentList = (props:any) => {
-  const data = [
-    {
-      title: "Ant Design Title 1"
-    },
-    {
-      title: "Ant Design Title 2"
-    },
-    {
-      title: "Ant Design Title 3"
-    },
-    {
-      title: "Ant Design Title 4"
+  const [commentList, setCommentList] = useState([]);
+  const [commentCount,setCommentCount] = useState(0)
+
+  const fetchCommentList =  async ()=>{
+    const res = await getCommentlist(props.article_id);
+    setCommentCount(res.count);
+    setCommentList(res.data)
+  } 
+
+  useEffect(() => {
+    if(props.article_id){
+      fetchCommentList()
     }
-  ];
+  }, [props.article_id]);
+
   const IconText = ({ type, text, onClick }: any) => (
     <span onClick={onClick}>
       <Icon type={type} style={{ marginRight: 8 }} />
@@ -104,48 +107,51 @@ const CommentList = (props:any) => {
       `}</style>
       <div className="container">
         <div className="top-title">
-          <span>53 条评论</span>
+          <span>{commentCount} 条评论</span>
         </div>
 
         <List
           itemLayout="vertical"
-          dataSource={data}
+          dataSource={commentList}
           renderItem={(item, index) => (
-            <List.Item>
+            <List.Item key={item._id}>
               <List.Item.Meta
-                avatar={
-                  <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                }
-                title={<div>{item.title}</div>}
+                avatar={<Avatar src={item.uid.avatar} />}
+                title={<div>{item.uid.username}</div>}
               />
-              写的很好，今年跟着大佬一起学技术了dsdadasjkldljsalkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkfsadsadsafakkkkkkkkkkkkkkkkkkkkkkkkkkkkkfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+              {item.content}
               <div className="footer">
-                <div className="footer-left">2020-01-01 00:33:12</div>
+                <div className="footer-left">
+                  {getDateDiff(item.create_time)}
+                </div>
                 <div className="footer-right">
                   <IconText
                     type="like-o"
-                    text="156"
+                    text={item.likes_count}
                     key="list-vertical-like-o"
-                    onClick={() => handleApproval(index)}
+                    onClick={() => handleApproval(item._id)}
                   />
 
                   <IconText
                     type="message"
-                    text="2"
+                    text={item.res_comment.length}
                     key="list-vertical-message"
-                    onClick={e => handleComment(e, index)}
+                    onClick={e => handleComment(e, item._id)}
                   />
                 </div>
               </div>
-              {id === index ? (
+              {id === item._id ? (
                 <div onClick={handleBox}>
-                  <TextArea defaultValue="@xxx:" onChange={hanleChange}></TextArea>
+                  <TextArea
+                    onChange={hanleChange}
+                    placeholder={`@${item.uid.username}`}
+                  ></TextArea>
                   <Button>回复</Button>
                 </div>
               ) : (
                 ""
               )}
-              <div className="sub-list">
+              {/* <div className="sub-list">
                 <List
                   itemLayout="vertical"
                   dataSource={data}
@@ -188,7 +194,7 @@ const CommentList = (props:any) => {
                     </List.Item>
                   )}
                 />
-              </div>
+              </div> */}
             </List.Item>
           )}
         />

@@ -35,4 +35,6 @@ export const addComment = (params: any) => {
   return post("/api/comment/add", params);
 };
 
-
+export const getCommentlist = (params: any) => {
+  return get("/api/comments?article_id=" + params);
+};

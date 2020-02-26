@@ -60,7 +60,7 @@ const Header = props => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if (userInfo) {
       setUserLogin(true);
-      props.handleUserLogin(true);
+      props.handleUserLogin && props.handleUserLogin(true);
       setUser(userInfo);
     }
   }, [visible]);
@@ -99,7 +99,7 @@ const Header = props => {
     localStorage.removeItem('token');
     localStorage.removeItem("userInfo");
     setUserLogin(false);
-    props.handleUserLogin(false)
+    props.handleUserLogin && props.handleUserLogin(false);
     message.success("账号已登出");
   }
 
