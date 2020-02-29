@@ -49,3 +49,7 @@ export const getCommentlist = (params: any) => {
 export const updateLikeComment = (params: any) => {
   return post("/api/comment/like", params);
 };
+
+export const replyComment = (params: any) => {
+  return post("/api/comment/reply", params);
+};

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Avatar, Divider, Input, Button, List, Skeleton, Icon, message } from "antd";
 import Comment from "../Comment";
-import { getCommentlist, updateLikeComment } from "../../api";
+import { getCommentlist, updateLikeComment, replyComment } from "../../api";
 import { timestampToTime, getDateDiff } from "../../utlis/utils";
 
 const { TextArea } = Input;
@@ -9,8 +9,9 @@ const { TextArea } = Input;
 const CommentList = (props: any) => {
   const [commentList, setCommentList] = useState([]);
   const [commentCount, setCommentCount] = useState(0);
+  const [reply,setReply] = useState('')
 
-  const { article_id, userLogin } = props;
+  const { article_id, userLogin, isComment } = props;
 
   const fetchCommentList = async () => {
     const res = await getCommentlist(article_id);
@@ -22,7 +23,7 @@ const CommentList = (props: any) => {
     if (props.article_id) {
       fetchCommentList();
     }
-  }, [props.isComment, userLogin]);
+  }, [isComment, userLogin]);
 
   const IconText = ({ type, text, onClick, color }: any) => (
     <span onClick={onClick} style={{ color }}>
@@ -74,9 +75,15 @@ const CommentList = (props: any) => {
     };
   }, []);
 
-  const hanleChange = e => {
-    console.log(e);
+  const hanleChange = ({ target: { value } }) => {
+    setReply(value);
   };
+
+  const handleReply = async (comment_id, res_userInfo) => {
+    const res =  await replyComment({ comment_id, res_userInfo,content:reply });
+    fetchCommentList();
+  }
+
   return (
     <>
       <style jsx>{`
@@ -125,7 +132,7 @@ const CommentList = (props: any) => {
         <List
           itemLayout="vertical"
           dataSource={commentList}
-          renderItem={(item, index) => (
+          renderItem={(item: any, index) => (
             <List.Item key={item._id}>
               <List.Item.Meta
                 avatar={<Avatar src={item.uid.avatar} />}
@@ -147,7 +154,6 @@ const CommentList = (props: any) => {
 
                   <IconText
                     type="message"
-                    text={item.res_comment.length}
                     key="list-vertical-message"
                     onClick={e => handleComment(e, item._id)}
                   />
@@ -159,55 +165,65 @@ const CommentList = (props: any) => {
                     onChange={hanleChange}
                     placeholder={`@${item.uid.username}`}
                   ></TextArea>
-                  <Button>回复</Button>
+                  <Button onClick={() => handleReply(item._id, item.uid._id)}>
+                    回复
+                  </Button>
                 </div>
               ) : (
                 ""
               )}
-              {/* <div className="sub-list">
-                <List
-                  itemLayout="vertical"
-                  dataSource={data}
-                  renderItem={(item, index) => (
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={
-                          <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
-                        }
-                        title={<div>{item.title}</div>}
-                      />
-                      写的很好，
-                      <div className="footer">
-                        <div className="footer-left">2020-01-01 00:33:12</div>
-                        <div className="footer-right">
-                          <IconText
-                            type="like-o"
-                            text="156"
-                            key="list-vertical-like-o"
-                            onClick={() => handleApproval(index)}
-                          />
+              {item.res_comment.length ? (
+                <div className="sub-list">
+                  <List
+                    itemLayout="vertical"
+                    dataSource={item.res_comment}
+                    renderItem={(sub: any, index) => (
+                      <List.Item>
+                        <List.Item.Meta
+                          avatar={
+                            <Avatar src={sub.top_userInfo.avatar || ""} />
+                          }
+                          title={<div>{sub.top_userInfo.username}</div>}
+                        />
+                        {sub.content}
+                        <div className="footer">
+                          <div className="footer-left">
+                            {getDateDiff(sub.create_time)}
+                          </div>
+                          <div className="footer-right">
+                            <IconText
+                              type="like-o"
+                              text={sub.likes_count}
+                              color={sub.isLiked ? "#1890ff" : ""}
+                              key="list-vertical-like-o"
+                              onClick={() => handleApproval(sub._id)}
+                            />
 
-                          <IconText
-                            type="message"
-                            text="2"
-                            key="list-vertical-message"
-                            onClick={e => handleComment(e, index)}
-                          />
+                            <IconText
+                              type="message"
+                              key="list-vertical-message"
+                              onClick={e => handleComment(e, sub._id)}
+                            />
+                          </div>
                         </div>
-                      </div>
-                      {id === index ? (
-                        <div onClick={handleBox}>
-                          <TextArea defaultValue="@xxx:"></TextArea>
-                          <Button>回复</Button>
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                      <div></div>
-                    </List.Item>
-                  )}
-                />
-              </div> */}
+                        {id === sub._id ? (
+                          <div onClick={handleBox}>
+                            <TextArea
+                              placeholder={`@${item.uid.username}`}
+                            ></TextArea>
+                            <Button>回复</Button>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                        <div></div>
+                      </List.Item>
+                    )}
+                  />
+                </div>
+              ) : (
+                ""
+              )}
             </List.Item>
           )}
         />
