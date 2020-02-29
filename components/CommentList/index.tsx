@@ -1,29 +1,31 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, Divider, Input, Button, List, Skeleton, Icon } from "antd";
+import { Avatar, Divider, Input, Button, List, Skeleton, Icon, message } from "antd";
 import Comment from "../Comment";
-import { getCommentlist} from "../../api";
+import { getCommentlist, updateLikeComment } from "../../api";
 import { timestampToTime, getDateDiff } from "../../utlis/utils";
 
 const { TextArea } = Input;
 
-const CommentList = (props:any) => {
+const CommentList = (props: any) => {
   const [commentList, setCommentList] = useState([]);
-  const [commentCount,setCommentCount] = useState(0)
+  const [commentCount, setCommentCount] = useState(0);
 
-  const fetchCommentList =  async () => {
-    const res = await getCommentlist(props.article_id);
+  const { article_id, userLogin } = props;
+
+  const fetchCommentList = async () => {
+    const res = await getCommentlist(article_id);
     setCommentCount(res.count);
-    setCommentList(res.data)
-  } 
+    setCommentList(res.data);
+  };
 
   useEffect(() => {
     if (props.article_id) {
       fetchCommentList();
     }
-  }, [props.isComment]);
+  }, [props.isComment, userLogin]);
 
-  const IconText = ({ type, text, onClick }: any) => (
-    <span onClick={onClick}>
+  const IconText = ({ type, text, onClick, color }: any) => (
+    <span onClick={onClick} style={{ color }}>
       <Icon type={type} style={{ marginRight: 8 }} />
       {text}
     </span>
@@ -33,14 +35,27 @@ const CommentList = (props:any) => {
     // https://zhuanlan.zhihu.com/p/26742034
     // 阻止合成事件与最外层document上的事件间的冒泡
     e.nativeEvent.stopImmediatePropagation();
-    console.log(c);
     setId(c);
-    console.log("comment");
   };
 
-  const handleApproval = (c: any) => {
-    console.log(c);
-    console.log("appr");
+  const handleApproval = async (comment_id: string) => {
+    if(userLogin){
+       const res = await updateLikeComment({ comment_id });
+       commentList.map(item => {
+         if (item._id === comment_id) {
+           if (item.isLiked) {
+             item.likes_count = item.likes_count - 1;
+           } else {
+             item.likes_count = item.likes_count + 1;
+           }
+           item.isLiked = !item.isLiked;
+         }
+       });
+       const new_list = JSON.parse(JSON.stringify(commentList));
+       setCommentList(new_list);
+    }else{
+      message.error('登录后才可点赞评论')
+    }
   };
 
   const handleBox = e => {
@@ -53,17 +68,14 @@ const CommentList = (props:any) => {
       setId("");
     });
     return () => {
-      document.removeEventListener(
-        "click",
-        () => {
-          setId("");
-        }
-      );
+      document.removeEventListener("click", () => {
+        setId("");
+      });
     };
   }, []);
 
   const hanleChange = e => {
-    console.log(e)
+    console.log(e);
   };
   return (
     <>
@@ -127,6 +139,7 @@ const CommentList = (props:any) => {
                 <div className="footer-right">
                   <IconText
                     type="like-o"
+                    color={item.isLiked ? "#1890ff" : ""}
                     text={item.likes_count}
                     key="list-vertical-like-o"
                     onClick={() => handleApproval(item._id)}

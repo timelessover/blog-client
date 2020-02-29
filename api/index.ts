@@ -36,5 +36,16 @@ export const addComment = (params: any) => {
 };
 
 export const getCommentlist = (params: any) => {
-  return get("/api/comments?article_id=" + params);
+  return get(
+    "/api/comments?article_id=" +
+      params +
+      "&uid=" +
+      (JSON.parse(window.localStorage.getItem("userInfo"))
+        ? JSON.parse(window.localStorage.getItem("userInfo")).uid
+        : "")
+  );
+};
+
+export const updateLikeComment = (params: any) => {
+  return post("/api/comment/like", params);
 };
