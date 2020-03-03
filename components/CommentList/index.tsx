@@ -38,22 +38,45 @@ const CommentList = (props: any) => {
     e.nativeEvent.stopImmediatePropagation();
     setId(c);
   };
-
-  const handleApproval = async (comment_id: string) => {
+  // type 1 为主评论，2为子评论
+  const handleApproval = async (comment_id: string,type:number) => {
+    let list:any = commentList;
     if(userLogin){
-       const res = await updateLikeComment({ comment_id });
-       commentList.map(item => {
-         if (item._id === comment_id) {
-           if (item.isLiked) {
-             item.likes_count = item.likes_count - 1;
-           } else {
-             item.likes_count = item.likes_count + 1;
-           }
-           item.isLiked = !item.isLiked;
-         }
-       });
-       const new_list = JSON.parse(JSON.stringify(commentList));
-       setCommentList(new_list);
+      switch (type) {
+        case 1:
+          list.map(item => {
+            if (item._id === comment_id) {
+              if (item.isLiked) {
+                item.likes_count = item.likes_count - 1;
+              } else {
+                item.likes_count = item.likes_count + 1;
+              }
+              item.isLiked = !item.isLiked;
+            }
+          });
+          break;
+        case 2:
+          list.forEach(item => {
+            item.res_comment.map((item: any) => {
+              if (item._id === comment_id) {
+                if (item.isLiked) {
+                  item.likes_count = item.likes_count - 1;
+                } else {
+                  item.likes_count = item.likes_count + 1;
+                }
+                item.isLiked = !item.isLiked;
+              }
+            });
+          })
+          
+          break;
+        default:
+          break;
+      }
+      const new_list = JSON.parse(JSON.stringify(list));
+      setCommentList(new_list);
+       const res = await updateLikeComment({ comment_id,type });
+       
     }else{
       message.error('登录后才可点赞评论')
     }
@@ -67,10 +90,12 @@ const CommentList = (props: any) => {
   useEffect(() => {
     document.addEventListener("click", () => {
       setId("");
+      setReply("")
     });
     return () => {
       document.removeEventListener("click", () => {
         setId("");
+        setReply("")
       });
     };
   }, []);
@@ -80,8 +105,19 @@ const CommentList = (props: any) => {
   };
 
   const handleReply = async (comment_id, res_userInfo) => {
-    const res =  await replyComment({ comment_id, res_userInfo,content:reply });
-    fetchCommentList();
+    if (reply) {
+      const res = await replyComment({
+        comment_id,
+        res_userInfo,
+        content: reply
+      });
+      fetchCommentList();
+      setId("");
+      setReply("");
+    } else {
+      message.error("评论内容不能为空");
+    }
+      
   }
 
   return (
@@ -149,7 +185,7 @@ const CommentList = (props: any) => {
                     color={item.isLiked ? "#1890ff" : ""}
                     text={item.likes_count}
                     key="list-vertical-like-o"
-                    onClick={() => handleApproval(item._id)}
+                    onClick={() => handleApproval(item._id,1)}
                   />
 
                   <IconText
@@ -185,7 +221,10 @@ const CommentList = (props: any) => {
                           }
                           title={<div>{sub.top_userInfo.username}</div>}
                         />
-                        {sub.content}
+                        {"回复" +
+                          sub.res_userInfo.username +
+                          "：" +
+                          sub.content}
                         <div className="footer">
                           <div className="footer-left">
                             {getDateDiff(sub.create_time)}
@@ -196,7 +235,7 @@ const CommentList = (props: any) => {
                               text={sub.likes_count}
                               color={sub.isLiked ? "#1890ff" : ""}
                               key="list-vertical-like-o"
-                              onClick={() => handleApproval(sub._id)}
+                              onClick={() => handleApproval(sub._id,2)}
                             />
 
                             <IconText
@@ -209,9 +248,16 @@ const CommentList = (props: any) => {
                         {id === sub._id ? (
                           <div onClick={handleBox}>
                             <TextArea
-                              placeholder={`@${item.uid.username}`}
+                              onChange={hanleChange}
+                              placeholder={`@${sub.top_userInfo.username}`}
                             ></TextArea>
-                            <Button>回复</Button>
+                            <Button
+                              onClick={() =>
+                                handleReply(item._id, sub.top_userInfo._id)
+                              }
+                            >
+                              回复
+                            </Button>
                           </div>
                         ) : (
                           ""
