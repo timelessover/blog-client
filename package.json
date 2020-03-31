@@ -21,7 +21,7 @@
     "marked": "^0.8.0",
     "mobx": "^5.15.4",
     "mobx-react": "^6.1.4",
-    "next": "9.2.1",
+    "next": "9.3.2",
     "node-sass": "^4.13.1",
     "postcss-preset-env": "^6.7.0",
     "react": "16.12.0",
